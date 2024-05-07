@@ -15,7 +15,7 @@ class WeatherData {
       this.tempMin});
 
   factory WeatherData.fromJson(Map<String, dynamic> json) {
-    String capitalize(String s) => '$s[0].toUpperCase$s.substring(1)';
+    String capitalize(String s) => '${s[0].toUpperCase}${s.substring(1)}';
 
     return WeatherData(
       temp: json['main']['temp'].toDouble(),
