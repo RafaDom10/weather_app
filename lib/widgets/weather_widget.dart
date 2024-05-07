@@ -10,7 +10,7 @@ class Weather extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.network('https://openweathermap.org/img/w/${temperature.icon}',
+        Image.network('http://openweathermap.org/img/w/${temperature.icon}.png',
             fit: BoxFit.fill, width: 80.0),
         Text(
           '${temperature.temp?.toStringAsFixed(0)} ºC',
