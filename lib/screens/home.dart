@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_app/model/weather_model.dart';
+import 'package:weather_app/widgets/weather_widget.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,6 +18,12 @@ class _HomeState extends State<Home> {
   bool isLoading = false;
   final List<String> _cities = ['São Paulo', 'London', 'New York'];
   String _selectedCity = 'São Paulo';
+
+  @override
+  void initState() {
+    super.initState();
+    loadWeather();
+  }
 
   loadWeather() async {
     setState(() {
@@ -62,6 +69,7 @@ class _HomeState extends State<Home> {
               onChanged: ((value) => {
                     setState(() {
                       _selectedCity = value!;
+                      loadWeather();
                     })
                   }),
               selectedItem: _selectedCity,
@@ -70,7 +78,40 @@ class _HomeState extends State<Home> {
                       icon: Icon(
                 Icons.location_on,
               ))),
-            )
+            ),
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            strokeWidth: 4.0,
+                            valueColor: AlwaysStoppedAnimation(Colors.blue),
+                          )
+                        // ignore: unnecessary_null_comparison
+                        : weatherData != null
+                            ? Weather(temperature: weatherData)
+                            : Text(
+                                'Sem dados para exibir',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              )),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: isLoading
+                        ? Text('Carregando...',
+                            style: Theme.of(context).textTheme.headlineSmall)
+                        : IconButton(
+                            onPressed: loadWeather,
+                            icon: const Icon(Icons.refresh),
+                            iconSize: 40.0,
+                            tooltip: 'Recarregar',
+                            color: Colors.blue,
+                          ))
+              ],
+            ))
           ],
         ),
       ),
